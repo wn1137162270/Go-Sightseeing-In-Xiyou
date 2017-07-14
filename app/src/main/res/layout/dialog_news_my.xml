@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/news_dialog_background">
+
+    <RelativeLayout
+        android:layout_width="280dp"
+        android:layout_height="330dp">
+
+        <RelativeLayout
+            android:id="@+id/title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/news_title"
+                android:textColor="@color/colorBlack"
+                android:textSize="17sp"/>
+
+            <ImageButton
+                android:id="@+id/close_ib"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/close"/>
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/line_tv"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/title_layout"
+            android:background="@color/colorPurple"/>
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/line_tv">
+
+            <TextView
+                android:id="@+id/content_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="15.5sp"/>
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/next_ib"
+            android:layout_width="77dp"
+            android:layout_height="37dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/next_button_background"
+            android:text="@string/next"
+            android:textColor="@color/colorPurple"
+            android:textSize="17sp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

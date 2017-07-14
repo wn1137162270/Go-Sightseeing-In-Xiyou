@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="myapp.lenovo.httpclient.LoginActivity"
+    android:background="@drawable/login_background">
+
+    <ImageView
+        android:id="@+id/login_iv"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="80dp" />
+
+    <TextView
+        android:id="@+id/about_login_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:textAppearance="?android:attr/textAppearanceButton"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:text="@string/about_login"/>
+
+    <RelativeLayout
+        android:id="@+id/login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/about_login_tv"
+        android:layout_marginBottom="40dp"
+        android:gravity="center_horizontal">
+
+        <EditText
+            android:id="@+id/account_et"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"
+            android:hint="@string/account"
+            android:inputType="text"
+            android:textColorHint="@color/colorDarkGray"
+            android:background="@drawable/login_et_background"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp" />
+
+        <ImageView
+            android:id="@+id/account_iv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignLeft="@id/account_et"
+            android:layout_alignTop="@id/account_et"
+            android:layout_alignBottom="@id/account_et"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/account" />
+
+        <EditText
+            android:id="@+id/password_et"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/account_et"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textColorHint="@color/colorDarkGray"
+            android:background="@drawable/login_et_background"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"/>
+
+        <ImageView
+            android:id="@+id/password_iv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignLeft="@id/password_et"
+            android:layout_alignTop="@id/password_et"
+            android:layout_alignBottom="@id/password_et"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/password" />
+
+        <EditText
+            android:id="@+id/verification_et"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/password_et"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"
+            android:hint="@string/verification"
+            android:inputType="text"
+            android:textColorHint="@color/colorDarkGray"
+            android:background="@drawable/login_et_background"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"/>
+
+        <ImageView
+            android:id="@+id/verification_iv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignLeft="@id/verification_et"
+            android:layout_alignTop="@id/verification_et"
+            android:layout_alignBottom="@id/verification_et"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/verification" />
+
+        <ImageView
+            android:id="@+id/identifying_code_iv"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_alignRight="@id/verification_et"
+            android:layout_alignTop="@id/verification_et"
+            android:layout_alignBottom="@id/verification_et"
+            android:layout_marginRight="20dp" />
+
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/verification_et"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            android:text="@string/login"
+            android:background="@drawable/login_btn_background"
+            android:gravity="center"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

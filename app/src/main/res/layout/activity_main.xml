@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="myapp.lenovo.httpclient.MainActivity">
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal">
+        
+        <RadioButton
+            android:id="@+id/course_rb"
+            android:text="@string/course"
+            style="@style/myRadioButton" />
+
+        <RadioButton
+            android:id="@+id/score_rb"
+            android:text="@string/score"
+            android:checked="true"
+            style="@style/myRadioButton"/>
+
+        <RadioButton
+            android:id="@+id/plan_rb"
+            android:text="@string/plan"
+            style="@style/myRadioButton"/>
+
+        <RadioButton
+            android:id="@+id/me_rb"
+            android:text="@string/me"
+            style="@style/myRadioButton"/>
+
+    </RadioGroup>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/radio_group">
+
+    </android.support.v4.view.ViewPager>
+
+</RelativeLayout>

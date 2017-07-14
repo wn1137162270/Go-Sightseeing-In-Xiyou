@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CourseTable">
+        <attr name="totalWeek" format="integer" />
+        <attr name="totalSection" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="CourseTable2">
+        <attr name="totalDays" format="integer" />
+        <attr name="totalJC" format="integer" />
+    </declare-styleable>
+</resources>
+
