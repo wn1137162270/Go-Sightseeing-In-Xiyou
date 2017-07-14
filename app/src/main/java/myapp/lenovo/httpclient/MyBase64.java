@@ -7,11 +7,11 @@ import org.apache.commons.codec.binary.Base64;
  */
 
 public class MyBase64 {
-    static String decode(String base64String){
+    public static String decode(String base64String){
         return new String(Base64.decodeBase64(base64String));
     }
 
-    static String encode(byte[] binaryData){
+    public static String encode(byte[] binaryData){
         return Base64.encodeBase64String(binaryData);
     }
 }
