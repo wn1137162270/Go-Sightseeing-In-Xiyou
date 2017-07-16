@@ -64,7 +64,7 @@ public class MeFragment extends Fragment {
     private static final String HOST_URL="http://222.24.62.120/";
     private static final String MAIN_URL="http://222.24.62.120/xs_main.aspx?xh=";
     private static final String CONTENT_URL="content.aspx";
-    private static final String ABOUT_URL="http://www.xiyoumobile.com/default.aspx";
+    private static final String ABOUT_URL="https://www.xiyoumobile.com";
     private static final String logoutViewState="dDwxMjg4MjkxNjE4Ozs+mC/tArt0u1jmP1rzm5PGO18pVC4=";
 
     @Override

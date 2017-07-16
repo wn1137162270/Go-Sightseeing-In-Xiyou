@@ -22,13 +22,22 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,7 +46,9 @@ public class ScoreFragment extends Fragment {
     private CourseFragment.PassValue passValue;
 
     private List<String> groupName;
-    private Map<String,List<String[]>> childName;
+    //private Map<String,List<String[]>> childName;
+    private Map<String,List<Score>> childName;
+    private String currentSemester;
     private ExpandableListView elv;
 
     private String linkURL;
@@ -54,6 +65,7 @@ public class ScoreFragment extends Fragment {
 
         groupName=new ArrayList<>();
         childName=new HashMap<>();
+        currentSemester="";
 
         Log.d("score","score");
         handler=new Handler(){
@@ -134,45 +146,173 @@ public class ScoreFragment extends Fragment {
         }
     }
 
-    public void analyzeScore(String allScoreResult){
-        String binaryString=MyBase64.decode(allScoreResult);
-        Log.d("binaryString",binaryString);
-        Elements td= Jsoup.parse(allScoreResult).select("td");
-        ArrayList<String[]> scores=new ArrayList<>();
-        for(int i=23;i<td.size();i=i+15){
-            int j=i;
-            if(td.get(j).text()==null||td.get(j).text().equals(""))
-                break;
-            String[] scoreInfo=new String[13];
-            for(j=i;j<i+15;j++){
-                if((j-23)%15!=13&&(j-23)%15!=14)
-                    scoreInfo[(j-23)%15]=td.get(j).text();
-            }
-            scores.add(scoreInfo);
+    private void analyzeScore(String allScoreResult){
+        org.jsoup.nodes.Document doc=Jsoup.parse(allScoreResult);
+        String viewState=doc.select("input[name=__VIEWSTATE]").val();
+        analyzeDailyFinalScore(viewState);
+//        Elements td=doc.select("td");
+//        ArrayList<String[]> scores=new ArrayList<>();
+//        for(int i=23;i<td.size();i=i+15){
+//            int j=i;
+//            if(td.get(j).text()==null||td.get(j).text().equals(""))
+//                break;
+//            String[] scoreInfo=new String[13];
+//            for(j=i;j<i+15;j++){
+//                if((j-23)%15!=13&&(j-23)%15!=14)
+//                    scoreInfo[(j-23)%15]=td.get(j).text();
+//            }
+//            scores.add(scoreInfo);
+//        }
+//        //for(int i=0;i<scores.size();i++){
+//        //    String[] scoreInfo=scores.get(i);
+//        //    for (String aScoreInfo : scoreInfo)
+//        //        Log.d(i + "", aScoreInfo);
+//        //}
+//        List<String[]> list=new ArrayList<>();
+//        for(int i=0;i<scores.size();i++){
+//            String[] scoreInfo=scores.get(i);
+//            if(i==0||scores.get(i)[1].equals(scores.get(i-1)[1]))
+//                list.add(scoreInfo);
+//            else {
+//                childName.put(list.get(0)[0]+list.get(0)[1],list);
+//                groupName.add(list.get(0)[0]+list.get(0)[1]);
+//                //list.clear();
+//                list=new ArrayList<>();
+//                list.add(scoreInfo);
+//            }
+//        }
+//        childName.put(list.get(0)[0]+list.get(0)[1],list);
+//        groupName.add(list.get(0)[0]+list.get(0)[1]);
+//        Message msg=handler.obtainMessage(1,"");
+//        msg.arg1=12;
+//        handler.sendMessage(msg);
+    }
+
+    private void analyzeDailyFinalScore(String viewState) {
+        String decodedMiddleString= null;
+        try {
+            decodedMiddleString = new String(MyBase64.decode(viewState));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //for(int i=0;i<scores.size();i++){
-        //    String[] scoreInfo=scores.get(i);
-        //    for (String aScoreInfo : scoreInfo)
-        //        Log.d(i + "", aScoreInfo);
-        //}
-        List<String[]> list=new ArrayList<>();
-        for(int i=0;i<scores.size();i++){
-            String[] scoreInfo=scores.get(i);
-            if(i==0||scores.get(i)[1].equals(scores.get(i-1)[1]))
-                list.add(scoreInfo);
-            else {
-                childName.put(list.get(0)[0]+list.get(0)[1],list);
-                groupName.add(list.get(0)[0]+list.get(0)[1]);
-                //list.clear();
-                list=new ArrayList<>();
-                list.add(scoreInfo);
+        Pattern p = Pattern.compile("b<(.*?)>;");
+        java.util.regex.Matcher m = p.matcher(decodedMiddleString);
+        String end_data = "";// 保存平时成绩的
+
+        while (m.find()) {
+            end_data = m.group(1);
+        }
+        String _end_data = null;
+        try {
+            _end_data = new String(MyBase64.decode(end_data), "utf-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        _end_data = _end_data.substring(_end_data.indexOf("<?xml"),
+                _end_data.indexOf("ram>"))
+                + "ram>";
+        // 替换xml中不合法的字符
+        _end_data = _end_data.replace(
+                _end_data.substring(_end_data.indexOf("<xs:schema"),
+                        _end_data.indexOf("<diffgr")), " ");
+        _end_data = _end_data.replace("utf-16", "UTF-8");
+        System.out.println("_end_data" + _end_data);
+//
+/*        Elements PSCJ=doc.select("PSCJ");
+        Elements QMCJ=doc.select("QMCJ");
+        for(int i=0;i<10;i++){Document doc=Jsoup.parse(_end_data);
+//        Elements tables=doc.select("Table");
+            Log.d("PSCJ",PSCJ.get(i).text());
+            Log.d("QMCJ",QMCJ.get(i).text());
+        }*/
+        InputStream is=new ByteArrayInputStream(_end_data.getBytes());
+        DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();
+        DocumentBuilder db;
+        org.w3c.dom.Document doc=null;
+        try {
+            db=dbf.newDocumentBuilder();
+            doc=db.parse(is);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        NodeList tables=doc.getElementsByTagName("Table");
+        String[] nodeNames={"KCMC","KCXZ","PSCJ","QMCJ","CJ"};
+        List<Score> scores=new ArrayList<>();
+        for(int i=0;i<tables.getLength();i++){
+            Score score=new Score();
+            NodeList nodes=tables.item(i).getChildNodes();
+            String year=null,semester=null;
+            for(int j=0;j<nodes.getLength();j++){
+                Node node=nodes.item(j);
+                String nodeName=node.getNodeName();
+                for(int k=0;k<5;k++){
+                    if(nodeName.equals(nodeNames[k])){
+                        addScore(score,k,node.getTextContent());
+                    }
+                }
+                if(nodeName.equals("XN")){
+                    year=node.getTextContent();
+                }
+                else if(nodeName.equals("XQ")){
+                    semester=node.getTextContent();
+                }
+            }
+            if(!currentSemester.equals(year+semester)){
+                if(scores.size()>0){
+                    childName.put(currentSemester,scores);
+                }
+                currentSemester=year+semester;
+                groupName.add(currentSemester);
+                scores=new ArrayList<>();
+                scores.add(score);
+            }
+            else{
+                scores.add(score);
             }
         }
-        childName.put(list.get(0)[0]+list.get(0)[1],list);
-        groupName.add(list.get(0)[0]+list.get(0)[1]);
+        childName.put(currentSemester,scores);
+        for(int i=0;i<groupName.size();i++){
+            Log.d("groupName",i+"---"+groupName.get(i));
+        }
+        List<Score> list0=childName.get("2015-20161");
+        for(int i=0;i<list0.size();i++){
+            Log.d("list0",i+"---"+list0.get(i));
+        }
+        List<Score> list1=childName.get("2015-20162");
+        for(int i=0;i<list1.size();i++){
+            Log.d("list1",i+"---"+list1.get(i));
+        }
+        List<Score> list2=childName.get("2016-20171");
+        for(int i=0;i<list2.size();i++){
+            Log.d("list2",i+"---"+list2.get(i));
+        }
+        List<Score> list3=childName.get("2016-20172");
+        for(int i=0;i<list3.size();i++){
+            Log.d("list3",i+"---"+list3.get(i));
+        }
+//        String decodedFinalString=new String(MyBase64.decode(decodedMiddleString));
+//        Log.d("decodedFinalString",decodedFinalString);
+//        String string=decodedFinalString.substring(decodedFinalString.indexOf("<Table"),
+//                decodedFinalString.indexOf("ram>"));
+//        Log.d("string",string);
         Message msg=handler.obtainMessage(1,"");
         msg.arg1=12;
         handler.sendMessage(msg);
+    }
+
+    private void addScore(Score score,int index,String content){
+        switch (index){
+            case 0:score.setCourseName(content);break;
+            case 1:score.setCourseType(content);break;
+            case 2:score.setDailyScore(content);break;
+            case 3:score.setFinalScore(content);break;
+            case 4:score.setScore(content);break;
+            default:break;
+        }
     }
 
     @Override

@@ -241,9 +241,9 @@ public class CourseFragment extends Fragment {
         Elements optionSelected=doc.select("option[selected]");
         chooseSelectedStr=optionSelected.get(0).text()+optionSelected.get(1).text();
         Elements td=doc.select("td");
-        for(int i=0;i<td.size();i++){
-            Log.d("td:"+i,td.get(i).text());
-        }
+        //for(int i=0;i<td.size();i++){
+        //    Log.d("td:"+i,td.get(i).text());
+        //}
         ArrayList<String[]> practiceList=new ArrayList<>();
         ArrayList<String[]> fieldTripList=new ArrayList<>();
         ArrayList<String[]> notArrangedList=new ArrayList<>();

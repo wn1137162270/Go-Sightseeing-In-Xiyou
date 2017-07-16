@@ -43,7 +43,7 @@ public class MainActivity extends FragmentActivity implements CourseFragment.Pas
         setContentView(R.layout.activity_main);
 
         myProgressBarDialog =new MyProgressBarDialog(MainActivity.this,"数据加载中…");
-         myProgressBarDialog.show();
+        myProgressBarDialog.show();
         myProgressBarDialog.setCancelable(false);
 
         actionBar=getActionBar();

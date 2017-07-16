@@ -217,7 +217,7 @@ public class LoginActivity extends Activity {
                 {
                     HttpEntity httpEntity=httpResponse.getEntity();
                     loginResult= EntityUtils.toString(httpEntity);
-                    Log.d("loginResult",loginResult);
+                    //Log.d("loginResult",loginResult);
                     myProgressBarDialog.dismiss();
                     analyzeLogin();
                 }

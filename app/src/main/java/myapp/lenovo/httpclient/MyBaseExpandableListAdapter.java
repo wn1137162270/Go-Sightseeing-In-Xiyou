@@ -1,6 +1,7 @@
 package myapp.lenovo.httpclient;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,11 @@ import java.util.Map;
 
 public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> groupName;
-    private Map<String,List<String[]>> childName;
+    private Map<String,List<Score>> childName;
     private Context context;
     private LayoutInflater inflater;
 
-    MyBaseExpandableListAdapter(List<String> groupName, Map<String,List<String[]>> childName
+    MyBaseExpandableListAdapter(List<String> groupName, Map<String,List<Score>> childName
             , Context context){
         this.groupName=groupName;
         this.childName=childName;
@@ -37,7 +38,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int i) {
         String group=groupName.get(i);
-        List<String[]> childList=childName.get(group);
+        List<Score> childList=childName.get(group);
         return childList.size();
     }
 
@@ -94,12 +95,45 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         }
         TextView cn = (TextView) view.findViewById(R.id.child_name_tv);
         TextView cp = (TextView) view.findViewById(R.id.child_property_tv);
+        TextView cds = (TextView) view.findViewById(R.id.child_daily_score_tv);
+        TextView cfs = (TextView) view.findViewById(R.id.child_final_score_tv);
         TextView cs = (TextView) view.findViewById(R.id.child_score_tv);
 
-        String gn=groupName.get(i);
-        cn.setText(childName.get(gn).get(i1)[3]);
-        cp.setText(childName.get(gn).get(i1)[4]);
-        cs.setText(childName.get(gn).get(i1)[8]);
+        if(i1==0){
+            cn.setText("课程名称");
+            cp.setText("性质");
+            cds.setText("平时");
+            cfs.setText("期末");
+            cs.setText("最终");
+
+            cn.setTextColor(Color.parseColor("#000080"));
+            cp.setTextColor(Color.parseColor("#000080"));
+            cds.setTextColor(Color.parseColor("#000080"));
+            cfs.setTextColor(Color.parseColor("#000080"));
+            cs.setTextColor(Color.parseColor("#000080"));
+        }
+        else{
+            String gn=groupName.get(i);
+            Score score=childName.get(gn).get(i1-1);
+            if (score.getDailyScore()==null){
+                score.setDailyScore("无");
+            }
+            if (score.getFinalScore()==null){
+                score.setFinalScore("无");
+            }
+
+            cn.setText(score.getCourseName());
+            cp.setText(score.getCourseType());
+            cds.setText(score.getDailyScore());
+            cfs.setText(score.getFinalScore());
+            cs.setText(score.getScore());
+
+            cn.setTextColor(Color.parseColor("#000000"));
+            cp.setTextColor(Color.parseColor("#000000"));
+            cds.setTextColor(Color.parseColor("#000000"));
+            cfs.setTextColor(Color.parseColor("#000000"));
+            cs.setTextColor(Color.parseColor("#000000"));
+        }
 
         return view;
     }
