@@ -14,7 +14,6 @@ import Decoder.BASE64Decoder;
 
 public class MyBase64 {
     public static byte[] decode(String base64String) throws IOException {
-        Log.d("base64String",base64String);
         byte[] bytes=new BASE64Decoder().decodeBuffer(base64String);
         return bytes;
     }
